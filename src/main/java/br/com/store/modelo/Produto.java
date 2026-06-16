@@ -12,15 +12,17 @@ public class Produto {
 
     @Id //informa que o id é igual ao do banco
     @GeneratedValue(strategy= GenerationType.IDENTITY) //informa que o banco vaigerar os ids
-    private long id;
+    private Long id;
     private String nome;
     private String descricao;
     private BigDecimal preco;
     private LocalDate dataCadastro = LocalDate.now();
 
-    @Enumerated(EnumType.STRING)  //para aparecer a string em si na coluna do bd e não apenas a posição
+    @ManyToOne //muitos produtos para uma categoria (muitos para um)
     private Categoria categoria;
 
+    public Produto() {
+    }
 
     public Produto(String nome, String descricao, BigDecimal preco, Categoria categoria) {
         this.nome = nome;

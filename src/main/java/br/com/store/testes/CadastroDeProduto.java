@@ -1,5 +1,6 @@
 package br.com.store.testes;
 
+import br.com.store.dao.CategoriaDao;
 import br.com.store.dao.ProdutoDao;
 import br.com.store.modelo.Categoria;
 import br.com.store.modelo.Produto;
@@ -10,14 +11,18 @@ import java.math.BigDecimal;
 
 public class CadastroDeProduto {
     public static void main(String[] args) {
-        Produto celular = new Produto("Iphone X", "ótimo custo beneficio", new BigDecimal("2400"), Categoria.CELULARES );
+        Categoria celulares = new Categoria("celulares");
+        Produto celular = new Produto("Iphone X", "ótimo custo beneficio", new BigDecimal("2400"), celulares );
 
         EntityManager em = JPAUtil.getEntityManager();
-        ProdutoDao dao = new ProdutoDao(em);
+        ProdutoDao produtoDao = new ProdutoDao(em);
+        CategoriaDao categoriaDao = new CategoriaDao(em);
 
-        em.getTransaction().begin(); //iniciando transacao
-        dao.cadastrar(celular); //fazendo o inserte no banco de dados com o jpa
-        em.getTransaction().commit(); //commita a transação
+        em.getTransaction().begin();
+        categoriaDao.cadastrar(celulares);  //salvando a categoria no banco de dados
+        produtoDao.cadastrar(celular); //salvando o profuto no banco de dados
+
+        em.getTransaction().commit();
         em.close(); //fecha a transacao
     }
 }
